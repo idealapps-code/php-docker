@@ -13,7 +13,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./app:/var/www/default
+      - ./app/data:/var/www/default
     working_dir: /var/www/default
     profiles:
       - dev
@@ -38,7 +38,7 @@ services:
     expose:
       - 9000
     volumes:
-      - ./app:/var/www/default
+      - ./app/data:/var/www/default
     working_dir: /var/www/default
     profiles:
       - dev
