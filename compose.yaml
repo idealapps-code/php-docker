@@ -1,0 +1,83 @@
+services:
+  app:
+    container_name: app
+    build: ./app
+    volumes:
+      - app:/var/www/default
+    profiles:
+      - prod
+  nginx-dev:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./app:/var/www/default
+    working_dir: /var/www/default
+    profiles:
+      - dev
+    restart: unless-stopped
+  nginx-prod:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - app:/var/www/default
+    working_dir: /var/www/default
+    profiles:
+      - prod
+    restart: unless-stopped
+  php-dev:
+    container_name: php
+    build:
+      context: ./php
+      target: development
+    expose:
+      - 9000
+    volumes:
+      - ./app:/var/www/default
+    working_dir: /var/www/default
+    profiles:
+      - dev
+    restart: unless-stopped
+  php-prod:
+    container_name: php
+    build:
+      context: ./php
+      target: production
+    expose:
+      - 9000
+    volumes:
+      - app:/var/www/default
+    working_dir: /var/www/default
+    profiles:
+      - prod
+    restart: unless-stopped
+  mariadb:
+    container_name: mariadb
+    build: ./mariadb
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: 12345678
+      MARIADB_DATABASE: app
+      MARIADB_USER: app
+      MARIADB_PASSWORD: 12345678
+    expose:
+      - 3306
+    volumes:
+      - mariadb:/var/lib/mysql
+    restart: unless-stopped
+  redis:
+    container_name: redis
+    build: ./redis
+    expose:
+      - 6379
+    volumes:
+      - redis:/data
+    restart: unless-stopped
+volumes:
+  mariadb:
+  redis:
+  app:
