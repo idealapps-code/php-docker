@@ -1,7 +1,6 @@
 FROM ubuntu:24.04
 
-COPY ./ /var/www/default/
-RUN rm -f /var/www/default/Dockerfile
+COPY ./data/ /var/www/default/
 
 RUN chown -R www-data:www-data /var/www
 RUN find /var/www -type f -exec 644 {} \;
