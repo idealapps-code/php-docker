@@ -6,6 +6,7 @@ ADD --chmod=0755 https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/w
 RUN apt update
 RUN apt install -y git
 RUN composer global require laravel/installer
+RUN ln -s /root/.composer/vendor/bin/laravel /usr/local/bin/laravel
 COPY ./www.conf /usr/local/etc/php-fpm.d/
 COPY ./php.ini-production /usr/local/etc/php/php.ini
 
@@ -17,5 +18,6 @@ ADD --chmod=0755 https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/w
 RUN apt update
 RUN apt install -y git
 RUN composer global require laravel/installer
+RUN ln -s /root/.composer/vendor/bin/laravel /usr/local/bin/laravel
 COPY ./www.conf /usr/local/etc/php-fpm.d/
 COPY ./php.ini-development /usr/local/etc/php/php.ini
